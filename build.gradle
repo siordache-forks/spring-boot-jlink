@@ -12,6 +12,8 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11
 
+mainClassName = 'com.example.testjlink.TestJlinkApplication'
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
