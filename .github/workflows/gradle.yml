@@ -1,4 +1,4 @@
-name: JLint CI
+name: JLink CI
 
 on: [push]
 
@@ -17,5 +17,5 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Build with Gradle jlint
-      run: ./gradlew jlint
+    - name: Build with Gradle jlink
+      run: ./gradlew jlink
