@@ -1,5 +1,4 @@
 module testjlink {
-    //requires static lombok;
 
     requires spring.boot;
     requires spring.boot.autoconfigure;
