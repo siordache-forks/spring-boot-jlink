@@ -30,6 +30,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 }
 
 jlink {
@@ -50,5 +51,5 @@ jlink {
 			uses 'javax.validation.valueextraction.ValueExtractor'
 			uses 'javax.validation.ConstraintValidator'
 	}
-	forceMerge 'jackson', 'log4j'
+	forceMerge 'jackson', 'log4j', 'jaxb', 'istack', 'stax'
 }
