@@ -50,6 +50,8 @@ jlink {
 			uses 'ch.qos.logback.classic.spi.Configurator'
 			uses 'javax.validation.valueextraction.ValueExtractor'
 			uses 'javax.validation.ConstraintValidator'
+			excludeProvides implementation: 'com.sun.xml.bind.v2.ContextFactory'
+			excludeProvides servicePattern: 'javax.enterprise.*'
 	}
 	forceMerge 'jackson', 'log4j', 'jaxb', 'istack', 'stax'
 }
