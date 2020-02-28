@@ -28,9 +28,14 @@ repositories {
 	mavenCentral()
 }
 
+configurations {
+   springAutoConfig { transitive = false }
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	springAutoConfig("org.springframework.boot:spring-boot-autoconfigure")
 }
 
 jlink {
@@ -54,4 +59,19 @@ jlink {
 			excludeProvides servicePattern: 'javax.enterprise.*'
 	}
 	forceMerge 'jackson', 'log4j', 'jaxb', 'istack', 'stax'
+}
+
+prepareMergedJarsDir.doLast {
+    // extract META-INF/spring.factories from spring-boot-autoconfigure
+    copy {
+        from zipTree(configurations.springAutoConfig.singleFile).matching {
+            include 'META-INF/spring.factories'
+        }
+        into jlinkBasePath
+    }
+
+    // insert META-INF/spring.factories into the main jar
+    ant.zip(update: "true", destfile: jar.archivePath, keepcompression: true) {
+        fileset(dir: "$jlinkBasePath", includes: 'META-INF/**')
+    }
 }
