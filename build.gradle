@@ -36,12 +36,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	springAutoConfig("org.springframework.boot:spring-boot-autoconfigure")
+	runtimeOnly 'org.apache.derby:derby'
+
 }
 
 jlink {
 	options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
 	launcher {
-		name = 'hellofx'
+		name = 'hello-spring-boot'
 		customImage {
 			appModules = ['com.example.merged.module']
 		}
@@ -58,7 +60,7 @@ jlink {
 			excludeProvides implementation: 'com.sun.xml.bind.v2.ContextFactory'
 			excludeProvides servicePattern: 'javax.enterprise.*'
 	}
-	forceMerge 'jackson', 'log4j', 'jaxb', 'istack', 'stax'
+	forceMerge 'jackson', 'log4j', 'jaxb', 'istack', 'stax', 'byte-buddy', 'hibernate'
 }
 
 prepareMergedJarsDir.doLast {
@@ -75,3 +77,24 @@ prepareMergedJarsDir.doLast {
         fileset(dir: "$jlinkBasePath", includes: 'META-INF/**')
     }
 }
+
+
+/*
+tasks.jlink.doLast {
+	// Spring performs its magic by scanning the classpath, but in a modular application the classpath is replaced by the module-path.
+	// To circumvent this problem, we copy all resources into the 'config' directory and set this directory as classpath.
+	copy {
+		from "$cloneDir/src/main/resources"
+		into "$imageDirPath/bin/config"
+	}
+	copy {
+		from 'resources/css'
+		into "$imageDirPath/bin/config/static/resources/css"
+	}
+	// Spring also needs to read the .class files, therefore they should be accessible via classpath.
+	// Note: These .class files are only used as resources, they will not be loaded by a classloader.
+	copy {
+		from "$buildDir/classes/java/main/org/springframework/samples/petclinic"
+		into "$imageDirPath/bin/config/org/springframework/samples/petclinic/for-spring-classpath-scanner"
+	}
+}*/
